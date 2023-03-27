@@ -131,7 +131,7 @@ class Circuit:
                             self.gate_nodes[node].value = int(not(self.inputs[self.gate_nodes[node].inputs[0]].value));
                         else:
                             self.gate_nodes[node].value_hist = self.gate_nodes[node].value_hist;
-                            self.gate_nodes[node].value = not(self.gate_nodes[self.gate_nodes[node].inputs[0]].value);
+                            self.gate_nodes[node].value = int(not(self.gate_nodes[self.gate_nodes[node].inputs[0]].value));
                     else:
                         op0 = int(self.search_node_value(self.gate_nodes[node].inputs[0]));
                         op1 = int(self.search_node_value(self.gate_nodes[node].inputs[1]));
@@ -148,27 +148,39 @@ class Circuit:
 
                     stable = self.check_node_conv(self.gate_nodes[node]);
         else:
+            tmp_nodes = {k: 0 for k in self.gate_nodes};
             for node in self.gate_nodes:
                 if (self.gate_nodes[node].op == 'NOT'):
                     if self.gate_nodes[node].inputs[0] in self.inputs:
-                        self.gate_nodes[node].value_hist = self.gate_nodes[node].value;
-                        self.gate_nodes[node].value = int(not(self.inputs[self.gate_nodes[node].inputs[0]].value));
+                        tmp_nodes[node] = int(not(self.inputs[self.gate_nodes[node].inputs[0]].value));
+                        #self.gate_nodes[node].value_hist = self.gate_nodes[node].value;
+                        #self.gate_nodes[node].value = int(not(self.inputs[self.gate_nodes[node].inputs[0]].value));
                     else:
-                        self.gate_nodes[node].value_hist = self.gate_nodes[node].value;
-                        self.gate_nodes[node].value = not(self.gate_nodes[self.gate_nodes[node].inputs[0]].value);
+                        tmp_nodes[node] = int(not(self.gate_nodes[self.gate_nodes[node].inputs[0]].value));
+                        #self.gate_nodes[node].value_hist = self.gate_nodes[node].value;
+                        #self.gate_nodes[node].value = int(not(self.gate_nodes[self.gate_nodes[node].inputs[0]].value));
                 else:
                     op0 = int(self.search_node_value(self.gate_nodes[node].inputs[0]));
                     op1 = int(self.search_node_value(self.gate_nodes[node].inputs[1]));
                     if (self.gate_nodes[node].op == 'AND'):
-                        self.set_node_value(node, op0 and op1);
+                        tmp_nodes[node] = op0 and op1;
+                        #self.set_node_value(node, op0 and op1);
                     elif (self.gate_nodes[node].op == 'OR'):
-                        self.set_node_value(node, op0 or op1);
+                        tmp_nodes[node] = op0 or op1;
+                        #self.set_node_value(node, op0 or op1);
                     elif (self.gate_nodes[node].op == 'NAND'):
-                        self.set_node_value(node, int(not(op0 and op1)));
+                        tmp_nodes[node] = int(not(op0 and op1)); 
+                        #self.set_node_value(node, int(not(op0 and op1)));
                     elif (self.gate_nodes[node].op == 'NOR'):
-                        self.set_node_value(node, int(not(op0 or op1)));
+                        tmp_nodes[node] = int(not(op0 or op1)); 
+                        #self.set_node_value(node, int(not(op0 or op1)));
                     elif (self.gate_nodes[node].op == 'XOR'):
-                        self.set_node_value(node, int(op0 ^ op1));
+                        tmp_nodes[node] = int(op0 ^ op1); 
+                        #self.set_node_value(node, int(op0 ^ op1));
+
+            # Passes the tmp_nodes to the node values
+            for node in self.gate_nodes:
+                self.set_node_value(node, tmp_nodes[node]);
 
         if (db):
             print(count_stable);
@@ -258,7 +270,7 @@ class Circuit:
                 self.build_output();
 
         while(not(self.check_stable())):
-            self.eval_nodes(full_propagation = False);
+            self.eval_nodes(full_propagation = False, db = 1);
             self.build_output();
 
         self.sort_output();

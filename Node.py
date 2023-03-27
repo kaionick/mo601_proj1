@@ -11,5 +11,5 @@ class Node:
         self.name = name;
         self.inputs = inputs;
         self.op = op;
-        self.value = '0';
+        self.value = 0;
         self.value_hist = 'x';
