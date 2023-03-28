@@ -257,12 +257,15 @@ class Circuit:
                     self.eval_nodes(full_propagation = False); # Update functionalty to run one cycle only
                     self.cycles[self.stim_packet] = self.cycles[self.stim_packet] - 1;
                 self.time_ctrl();
-                self.update_inputs();
+                if (self.stim_packet < self.stim[0].__len__()):
+                    self.update_inputs();
                 self.build_output();
 
-        while(not(self.check_stable())):
+        at_least_once = True;
+        while(not(self.check_stable()) or at_least_once):
             self.eval_nodes(full_propagation = False);
             self.build_output();
+            at_least_once = False;
 
         self.sort_output();
 

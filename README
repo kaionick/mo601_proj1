@@ -62,8 +62,8 @@ The project runs using a Docker container and it really easy to run:
 
 The outputs are written in your local repository with the following names:
 
-    * Zero Delay: test/test0/esperado0.txt
-    * Delayed: test/test0/esperado1.txt
+    * Zero Delay: test/test0/saida0.csv
+    * Delayed: test/test0/saida1.csv
 
 # ---------------------------------------------------------------------------------
 # Examples

@@ -1,0 +1,6 @@
+F = XOR A B
+I = NOT F
+G = NOR B C
+H = AND G D
+J = OR I H
+K = NAND J E
