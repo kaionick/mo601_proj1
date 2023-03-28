@@ -1,0 +1,78 @@
+# ---------------------------------------------------------------------------------
+# Super Basic HDL Simulator (SBHDL_SIM)
+# ---------------------------------------------------------------------------------
+
+This project is a super basic HDL simulator written in Python and deployed
+using Docker.
+
+The simulator supports 5 fundamental logic ports of 2 inputs (AND, OR, NAND,
+NOR, XOR) and the NOT port. The simulation engine simulates the logic gates
+using a zero delay methodology and a delayed methodology which each ports has
+the same propagation delay (1 time unit).
+
+Also, the SBHDL_SIM uses a stimulus file based on the VCD syntax and very 
+simple HDL language description.
+
+# ---------------------------------------------------------------------------------
+# How to use
+# ---------------------------------------------------------------------------------
+
+# ----------------------------------
+# Setup the files
+# ----------------------------------
+
+To setup your circuits and stimulus files:
+
+    1. Create the main test directory in the repo root:
+
+        mkdir test
+
+    2. Create your test directory inside "test":
+        
+        mkdir test/test0
+
+    3. Describe your circuit in a file named circuito.hdl inside your new
+       test directory
+
+        touch test/test0/circuito.hdl
+         --> Edit the file (Examples can be found at <repo>/examples).
+
+    4. Write the stimulus in a file named estimulos.txt in the same di-
+       rectory of step (2).
+
+        touch test/test0/estimulos.txt
+         --> Edit the file (Examples can be found at <repo>/examples).
+
+You can create as many test directories as you want because SBHDL_SIM
+will run all of them.
+
+# ----------------------------------
+# Run the project
+# ----------------------------------
+
+The project runs using a Docker container and it really easy to run:
+
+    1. In the repo root, build the docker:
+
+        docker build -t sbhdl_sim .
+
+    2. Run the created image as a container:
+
+        docker run -v ${PWD}/test:/app/test -d sbhdl_sim
+
+The outputs are written in your local repository with the following names:
+
+    * Zero Delay: test/test0/esperado0.txt
+    * Delayed: test/test0/esperado1.txt
+
+# ---------------------------------------------------------------------------------
+# Examples
+# ---------------------------------------------------------------------------------
+
+Examples of circuit description and stimulus can be found at:
+
+    * examples/ex0
+    * examples/ex1
+
+You can copy those directories (ex0 and ex1) to the test directory and run the
+project to test your Docker setup and see the simulation running.
