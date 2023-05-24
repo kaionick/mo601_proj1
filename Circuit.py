@@ -69,8 +69,15 @@ class Circuit:
                     stim_list_name_tmp = list();
                     stim_list_value_tmp = list();
             else:
-                stim_list_name_tmp.append(line_split[0]);
-                stim_list_value_tmp.append(int(line_split[2]));
+                if (len(line_split[0]) == 1):
+                    stim_list_name_tmp.append(line_split[0]);
+                    stim_list_value_tmp.append(int(line_split[2]));
+                else:
+                    stim_values_tmp = list(line_split[2]);
+                    for i,inp in enumerate(line_split[0]):
+                        stim_list_name_tmp.append(inp);
+                        stim_list_value_tmp.append(int(line_split[2][i]));
+                        
 
         if (stim_list_name_tmp and stim_list_value_tmp):
             stim_list[0].append(stim_list_name_tmp);
