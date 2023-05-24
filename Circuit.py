@@ -234,8 +234,12 @@ class Circuit:
         while (self.stim_packet < self.stim[0].__len__()):
             self.update_inputs();
             self.eval_nodes();
+            if (self.stim_packet < len(self.cycles)):
+                for i in range(self.cycles[self.stim_packet]):
+                    self.build_output();
+            else:
+                self.build_output();
             self.time_ctrl();
-            self.build_output();
         
         # Last convergence run: it is really necessary?
         self.time_ctrl();
@@ -262,6 +266,8 @@ class Circuit:
             if (self.cycles[self.stim_packet] > 0):
                 while(self.cycles[self.stim_packet] > 0):
                     self.eval_nodes(full_propagation = False); # Update functionalty to run one cycle only
+                    if (self.cycles[self.stim_packet] > 1):
+                        self.build_output();
                     self.cycles[self.stim_packet] = self.cycles[self.stim_packet] - 1;
                 self.time_ctrl();
                 if (self.stim_packet < self.stim[0].__len__()):
